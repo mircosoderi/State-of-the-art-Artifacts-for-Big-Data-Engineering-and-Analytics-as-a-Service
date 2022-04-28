@@ -1,0 +1,384 @@
+swagger: "2.0"
+info:
+  description: "The Network Factory is the starting point for using the results and software artifacts produced in the research activity presented in the scientific literature by Mirco Soderi, Vignesh Kamath, John G. Breslin from June 2016 onward at the Data Science Institute, National University of Ireland, Galway, and related to Ubiquitous Big Data Engineering and Analytics as a Service with a special focus to the Intelligent Manufacturing, also said the Industry 4.0. Download the Docker image msoderi/network-factory and run a container from that. Map port 1880 to one of your choice. Use the resulting endpoint to make the API requests described in this documentation. Also refer to the API documentation of the Service Node APIs, that describes how to configure and operate Service Nodes and other network nodes once that they have been created using the APIs described in this documentation, and possibly to the other API documentation files available in the repository (see below) to learn how to use specific functionalities. This documentation has been originally published and is kept up-to-date in the GitHub repository https://github.com/mircosoderi/State-of-the-art-Artifacts-for-Big-Data-Engineering-and-Analytics-as-a-Service where you will find all the most recent versions of all the artifacts produced in the context of this research activity."
+  version: "1.0.0"
+  title: "Network Factory"
+  contact:
+    email: "mirco.soderi@nuigalway.ie"
+schemes:
+- "https"
+- "http"
+paths:
+  /fence/{name}:
+    post:
+      tags: 
+        - "Fence"
+      summary: "Build a perimeter inside of which all the nodes of the network will be put. Nodes are not visible neither accessible from the outisde of the perimeter, unless an explicit port mapping is defined at their creation."
+      parameters:
+      - in: "path"
+        name: "name"
+        description: "The name of the fence."
+        required: true
+        type: string
+      consumes:
+      - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+    get:
+      tags: 
+        - "Fence"
+      summary: "Get some details about the specified fence."
+      parameters:
+      - in: "path"
+        name: "name"
+        description: "The name of the fence."
+        required: true
+        type: string
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"    
+    delete:
+      tags: 
+        - "Fence"    
+      summary: "Remove the fence. The fence must be emptied before it can be removed."
+      parameters:
+      - in: "path"
+        name: "name"
+        description: "The name of the fence."
+        required: true
+        type: string
+      responses:
+        "201":
+          description: "OK"
+        "400":
+          description: "Malformed request"    
+  /{fence}/{node}:
+    post:
+      tags: 
+        - "Node"      
+      summary: "Create a network node."
+      parameters:
+      - in: "path"
+        name: "fence"
+        description: "The name of the fence where the node must be created."
+        required: true
+        type: string
+      - in: "path"
+        name: "node"
+        description: "The type of the node to be created."
+        required: true
+        type: string
+        enum:
+          - "servicenodeacl"
+          - "transformationlibrary"
+          - "brokeracl"
+          - "broker"
+          - "servicenode"
+          - "aiserver"
+          - "app"
+      consumes:
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"    
+    delete:
+      tags: 
+        - "Node"      
+      summary: "Delete a network node."
+      parameters:
+      - in: "path"
+        name: "fence"
+        description: "The name of the fence where the node locates."
+        required: true
+        type: string
+      - in: "path"
+        name: "node"
+        description: "The name of the node to be deleted."
+        required: true
+        type: string
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"    
+  /{fenceName}/{nodeName}/{operation}:
+    post:
+      tags: 
+        - "Node"      
+      summary: "Perform some operation on a given node."
+      parameters:
+      - in: "path"
+        name: "fenceName"
+        description: "The name of the fence where the node locates."
+        required: true
+        type: string
+      - in: "path"
+        name: "nodeName"
+        description: "The name of the node to be targeted."
+        required: true
+        type: string
+      - in: "path"
+        name: "operation"
+        description: "The operation to be performed on the node."
+        required: true
+        type: string
+        enum:
+          - "on"
+          - "off"
+          - "start"
+          - "stop"
+          - "client"
+      consumes:
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"
+  /share/{srcFence}/{nodeName}/with/{destFence}:
+    post:
+      tags: 
+        - "Node"      
+      summary: "Shares a node between two fences."
+      parameters:
+      - in: "path"
+        name: "srcFence"
+        description: "The name of the fence where the node locates."
+        required: true
+        type: string
+      - in: "path"
+        name: "nodeName"
+        description: "The name of the node to be shared."
+        required: true
+        type: string
+      - in: "path"
+        name: "destFence"
+        description: "The name of fence to which the node must be made available."
+        required: true
+        type: string
+      consumes:
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error" 
+
+  /hide/{nodeName}/from/{fenceName}:
+    post:
+      tags: 
+        - "Node"      
+      summary: "Make a node unavailable to a fence."
+      parameters:
+      - in: "path"
+        name: "nodeName"
+        description: "The name of the node to be hidden."
+        required: true
+        type: string
+      - in: "path"
+        name: "fenceName"
+        description: "The name of fence from where it must not be possible to access the node anymore."
+        required: true
+        type: string
+      consumes:
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"           
+          
+          
+  /{fenceName}/{serverName}/task/{taskName}:
+    post:
+      tags: 
+        - "Artificial Intelligence Server"      
+      summary: "Add a task to an AIS node."
+      parameters:
+      - in: "path"
+        name: "fenceName"
+        description: "The name of the fence where the AI server locates."
+        required: true
+        type: string
+      - in: "path"
+        name: "serverName"
+        description: "The name of the server to be targeted."
+        required: true
+        type: string
+      - in: "path"
+        name: "taskName"
+        description: "The name of the task to be added."
+        required: true
+        type: string
+      consumes:
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"  
+    put:
+      tags: 
+        - "Artificial Intelligence Server"      
+      summary: "Update an existing task in an AIS node."
+      parameters:
+      - in: "path"
+        name: "fenceName"
+        description: "The name of the fence where the AI server locates."
+        required: true
+        type: string
+      - in: "path"
+        name: "serverName"
+        description: "The name of the server to be targeted."
+        required: true
+        type: string
+      - in: "path"
+        name: "taskName"
+        description: "The name of the task to be updated."
+        required: true
+        type: string
+      consumes:
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"              
+    delete:
+      tags: 
+        - "Artificial Intelligence Server"      
+      summary: "Delete a task from an AIS node."
+      parameters:
+      - in: "path"
+        name: "fenceName"
+        description: "The name of the fence where the AI server locates."
+        required: true
+        type: string
+      - in: "path"
+        name: "serverName"
+        description: "The name of the server to be targeted."
+        required: true
+        type: string
+      - in: "path"
+        name: "taskName"
+        description: "The name of the task to be deleted."
+        required: true
+        type: string
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"  
+          
+  /{fenceName}/{libraryName}/module/{moduleName}:
+    post:
+      tags: 
+        - "Transformation Library"      
+      summary: "Add a module/task to the Transformation Library."
+      parameters:
+      - in: "path"
+        name: "fenceName"
+        description: "The name of the fence where the library node locates."
+        required: true
+        type: string
+      - in: "path"
+        name: "libraryName"
+        description: "The name of the library node to be targeted."
+        required: true
+        type: string
+      - in: "path"
+        name: "moduleName"
+        description: "The name of the module/task to be added."
+        required: true
+        type: string
+      consumes:
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"         
+    put:
+      tags: 
+        - "Transformation Library"      
+      summary: "Update a module/task to the Transformation Library."
+      parameters:
+      - in: "path"
+        name: "fenceName"
+        description: "The name of the fence where the library node locates."
+        required: true
+        type: string
+      - in: "path"
+        name: "libraryName"
+        description: "The name of the library node to be targeted."
+        required: true
+        type: string
+      - in: "path"
+        name: "moduleName"
+        description: "The name of the module/task to be updated."
+        required: true
+        type: string
+      consumes:
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"              
+          
+  /security:
+    put:
+      tags: 
+        - "Network Factory"      
+      summary: "Updates the security mechanisms of the Network Factory."
+      consumes:
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"         
+    get:
+      tags: 
+        - "Network Factory"      
+      summary: "Retrieve the security mechanisms currently used in the Network Factory"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"              
