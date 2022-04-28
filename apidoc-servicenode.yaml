@@ -1,0 +1,295 @@
+swagger: "2.0"
+info:
+  description: "Service Nodes are a key result produced in the context of the research activity described in the scientific literature by Mirco Soderi, Vignesh Kamath, John G. Breslin from June 2021 onward at the Data Science Institute, National University of Ireland, Galway, and related to Ubiquitous Big Data Engineering and Analytics as a Service with a special focus to the Intelligent Manufacturing, also said the Industry 4.0. The starting point is anyway the Network Factory. Download the Docker image msoderi/network-factory and run a container from that. Map port 1880 to one of your choice. Use the resulting endpoint to make the API requests. Refer to the API documentation dedicated to the Network Factory, and kept separated from this documentation, to learn more about the Network Factory and how to use it. All documentation has been originally published and is kept up-to-date in the GitHub repository https://github.com/mircosoderi/State-of-the-art-Artifacts-for-Big-Data-Engineering-and-Analytics-as-a-Service where you will find all the most recent versions of all the artifacts produced in the context of this research activity. Coming to the Service Nodes, they are meant to be deployed in the logical/physical nearby of the manufactury plant, so tipically in premise, and not on the Cloud. They are Node-RED applications, and they perform data reading (for example from sensing devices through a range of well-known protocols, or other), writing (for example to a local filesystem, or to an event streaming server relying on Node-RED Kafka client module(s)), and transformations. The operations that Service Nodes can perform correspond to the software modules that are available and ready to use in the Transformation Library, a special Node-RED application where nothing is executed; indeed, it is just a container of modules ready to be loaded onto Service Nodes. Anyway, Service Nodes are not meant to process Big Data, or execute Machine Learning algorithms, or similar. Service Nodes interface with an Artificial Intelligence Server for that. All Service Nodes expose a common set of APIs that are for configuring all possible aspects of the Service Node, so the task to be performed, the input, the output, graphical aspects, everything that could be of interest. These APIs are described in this documentation."
+  version: "1.0.0"
+  title: "Service Node"
+  contact:
+    email: "mirco.soderi@nuigalway.ie"
+schemes:
+- "https"
+- "http"
+paths:
+  /node/transformation:
+    post:
+      tags: 
+        - "Business Logic"
+      summary: "Load a custom task from the Transformation Library onto the Service Node. Use the request body to specify the task to be loaded by name."
+      consumes:
+      - "text/plain"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"
+  /node/module/{moduleName}:
+    post:
+      tags: 
+        - "Business Logic"
+      summary: "Install a Node-RED module (palette) in this Service Node. Do this prior to call the transformation if the task that must be executed in the Service Node includes Node-RED nodes that are not part of the standard/default Node-RED palette."
+      parameters:
+      - in: path
+        name: moduleName
+        description: The Node-RED module (palette) to be loaded.
+        required: true
+        type: string
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"  
+    get:
+      tags: 
+        - "Business Logic"
+      summary: "Retrieve the implementation of a specific Node-RED module (palette) currently installed in the Service Node."
+      parameters:
+      - in: path
+        name: moduleName
+        description: The Node-RED module (palette) whose implementation must be retrieved.
+        required: true
+        type: string
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"   
+    delete:
+      tags: 
+        - "Business Logic"
+      summary: "Uninstall a Node-RED palette from this Service Node."
+      parameters:
+      - in: path
+        name: moduleName
+        description: The Node-RED module (palette) to be uninstalled.
+        required: true
+        type: string
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"              
+ 
+ 
+  /node/input:
+    post:
+      tags: 
+        - "Input/Output"
+      summary: "Instantiate a Node-RED MQTT client node, initially disconnected from everything, and to be configured. Once configured and connected, it will be the data source for this Service Node. Put the name of the new client node in the request body. You will use that when configuring and wiring the node."
+      consumes:
+      - "text/plain"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"  
+          
+  /node/input/{nodeName}:          
+    delete:
+      tags: 
+        - "Input/Output"
+      summary: "Delete a Node-RED MQTT client node used by this Service Node as a data source, by name."
+      parameters:
+      - in: path
+        name: nodeName
+        description: The name of the node to be deleted.
+        required: true
+        type: string
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"  
+ 
+  /node/output:
+    post:
+      tags: 
+        - "Input/Output"
+      summary: "Instantiate a Node-RED MQTT client node, initially disconnected from everything, and to be configured. Once configured and connected, it will be where the outputs of this Service Node will be written. Put the name of the new client node in the request body. You will use that when configuring and wiring the node."
+      consumes:
+      - "text/plain"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"  
+          
+  /node/output/{nodeName}:          
+    delete:
+      tags: 
+        - "Input/Output"
+      summary: "Delete a Node-RED MQTT client node used by this Service Node as an output destination, by name."
+      parameters:
+      - in: path
+        name: nodeName
+        description: The name of the node to be deleted.
+        required: true
+        type: string
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"  
+  /node/wire/{from}/{num}:
+    post:
+      tags: 
+        - "Input/Output"
+      summary: "Crate a wire from a specified output port of a specified Node-RED (source) node, to the input port of a specified Node-RED (destination) node. Put the name of the destination node in the request body."
+      parameters:
+      - in: path
+        name: from
+        description: The name of the source node.
+        required: true
+        type: string
+      - in: path
+        name: num
+        description: "The number of the output port to be connected, among those that are available in the source node."
+        required: true
+        type: integer       
+      consumes:
+      - "text/plain"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"     
+    delete:
+      tags: 
+        - "Input/Output"
+      summary: "Delete a wire that is currently originating from a specified output port of a specified Node-RED node."
+      parameters:
+      - in: path
+        name: from
+        description: The name of the source node.
+        required: true
+        type: string
+      - in: path
+        name: num
+        description: "The number of the output port."
+        required: true
+        type: integer       
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"           
+  /node/{nodeName}/{nodeProperty}:
+    put:
+      tags: 
+        - "Input/Output"
+      summary: "Set a configuration parameter. The value goes in the request body."
+      parameters:
+      - in: path
+        name: nodeName
+        description: "The name of the node where the configuration parameter must be set or updated."
+        required: true
+        type: string
+      - in: path
+        name: nodeProperty
+        description: "The name of the configuration parameter to be set or updated."
+        required: true
+        type: string  
+        enum:
+          - "broker"
+          - "topic"
+          - "qos"
+          - "usetls"
+          - "cert"
+          - "key"
+          - "ca"
+          - "verifyservercert"
+          - "servername"
+          - "port"
+          - "credentials"
+          - "x"
+          - "y"
+      consumes:
+      - "text/plain"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"        
+    get:
+      tags: 
+        - "Input/Output"
+      summary: "Get the value of a configuration parameter in an input or output node in this Service Node."
+      parameters:
+      - in: path
+        name: nodeName
+        description: "The name of the input or output node."
+        required: true
+        type: string
+      - in: path
+        name: nodeProperty
+        description: "The name of the configuration parameter to be retrieved."
+        required: true
+        type: string       
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"  
+  /node/{command}:
+    post:
+      tags: 
+        - "Control"
+      summary: "Start or stop this Service Node. That corresponds to enabling or disabling the subflow where the business logic is implemented."
+      parameters:
+      - in: path
+        name: command
+        description: "The control command to be delivered to this Service Node."
+        required: true
+        type: string
+        enum:
+          - "start"
+          - "stop"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"     
+    get:
+      tags: 
+        - "Control"
+      summary: "Retrieve the current status of this Service Node (on/off)."
+      parameters:
+      - in: path
+        name: command
+        required: true
+        type: string
+        enum:
+          - "status"
+      produces:
+        - "text/plain"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"        
