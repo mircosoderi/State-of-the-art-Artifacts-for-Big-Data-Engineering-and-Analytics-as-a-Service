@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   description: "The Network Factory is the starting point for using the results and software artifacts produced in the research activity presented in the scientific literature by Mirco Soderi, Vignesh Kamath, John G. Breslin from June 2021 onward at the Data Science Institute, National University of Ireland, Galway, and related to Ubiquitous Big Data Engineering and Analytics as a Service with a special focus to the Intelligent Manufacturing, also said the Industry 4.0. Download the Docker image msoderi/network-factory and run a container from that. Map port 1880 to one of your choice. Use the resulting endpoint to make the API requests described in this documentation. Also refer to the API documentation of the Service Node APIs, that describes how to configure and operate Service Nodes and other network nodes once that they have been created using the APIs described in this documentation, and possibly to the other API documentation files available in the repository (see below) to learn how to use specific functionalities. This documentation has been originally published and is kept up-to-date in the GitHub repository https://github.com/mircosoderi/State-of-the-art-Artifacts-for-Big-Data-Engineering-and-Analytics-as-a-Service where you will find all the most recent versions of all the artifacts produced in the context of this research activity."
-  version: "1.0.0"
+  version: "1.1.0"
   title: "Network Factory"
   contact:
     email: "mirco.soderi@nuigalway.ie"
@@ -81,6 +81,7 @@ paths:
           - "brokeracl"
           - "broker"
           - "servicenode"
+          - "crazynode"
           - "aiserver"
           - "app"
       consumes:
