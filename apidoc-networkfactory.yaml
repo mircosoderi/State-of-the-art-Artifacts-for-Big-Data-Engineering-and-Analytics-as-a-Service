@@ -206,7 +206,86 @@ paths:
         "400":
           description: "Malformed request"
         "500":
-          description: "Unexpected error"           
+          description: "Unexpected error"    
+          
+          
+          
+          
+          
+  /net/host/{node}:
+    post:
+      tags: 
+        - "Host Networking Node"      
+      summary: "Create a node that uses host networking."
+      parameters:
+      - in: "path"
+        name: "node"
+        description: "The type of the node to be created."
+        required: true
+        type: string
+        enum:
+          - "blenode"
+      consumes:
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"    
+    delete:
+      tags: 
+        - "Host Networking Node"      
+      summary: "Delete a node that uses host networking."
+      parameters:
+      - in: "path"
+        name: "node"
+        description: "The name of the node to be deleted."
+        required: true
+        type: string
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"    
+  /net/host/{nodeName}/{operation}:
+    post:
+      tags: 
+        - "Host Networking Node"     
+      summary: "Perform some operation on a given node."
+      parameters:
+      - in: "path"
+        name: "nodeName"
+        description: "The name of the node to be targeted."
+        required: true
+        type: string
+      - in: "path"
+        name: "operation"
+        description: "The operation to be performed on the node."
+        required: true
+        type: string
+        enum:
+          - "on"
+          - "off"
+      consumes:
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Malformed request"
+        "500":
+          description: "Unexpected error"
+          
+          
+          
+          
+          
+          
+          
           
           
   /{fenceName}/{serverName}/task/{taskName}:
