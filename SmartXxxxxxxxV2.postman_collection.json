@@ -330,7 +330,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": " {\r\n     \"Image\": \"msoderi/network-factory:0.7\",\r\n     \"HostConfig\": {\r\n         \"PortBindings\": {\r\n             \"1880/tcp\": [\r\n                 {\r\n                     \"HostPort\": \"585\"\r\n                 }\r\n             ]\r\n         }\r\n     },\r\n     \"ExposedPorts\": {\r\n         \"1880/tcp\": {}\r\n     }\r\n }",
+									"raw": " {\r\n     \"Image\": \"msoderi/network-factory:0.8\",\r\n     \"HostConfig\": {\r\n         \"PortBindings\": {\r\n             \"1880/tcp\": [\r\n                 {\r\n                     \"HostPort\": \"585\"\r\n                 }\r\n             ]\r\n         }\r\n     },\r\n     \"ExposedPorts\": {\r\n         \"1880/tcp\": {}\r\n     }\r\n }",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2986,7 +2986,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": " {\r\n     \"Image\": \"msoderi/network-factory:0.7\",\r\n     \"HostConfig\": {\r\n         \"PortBindings\": {\r\n             \"1880/tcp\": [\r\n                 {\r\n                     \"HostPort\": \"585\"\r\n                 }\r\n             ]\r\n         }\r\n     },\r\n     \"ExposedPorts\": {\r\n         \"1880/tcp\": {}\r\n     }\r\n }",
+									"raw": " {\r\n     \"Image\": \"msoderi/network-factory:0.8\",\r\n     \"HostConfig\": {\r\n         \"PortBindings\": {\r\n             \"1880/tcp\": [\r\n                 {\r\n                     \"HostPort\": \"585\"\r\n                 }\r\n             ]\r\n         }\r\n     },\r\n     \"ExposedPorts\": {\r\n         \"1880/tcp\": {}\r\n     }\r\n }",
 									"options": {
 										"raw": {
 											"language": "json"
