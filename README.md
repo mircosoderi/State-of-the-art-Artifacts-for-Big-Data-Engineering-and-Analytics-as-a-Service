@@ -9,3 +9,5 @@ Please refer to the following literature to gain a better understanding of the a
 [M. Soderi, V. Kamath, J. Morgan and J. G. Breslin, "Advanced Analytics as a Service in Smart Factories," 2022 IEEE 20th Jubilee World Symposium on Applied Machine Intelligence and Informatics (SAMI), 2022, pp. 000425-000430, doi: 10.1109/SAMI54271.2022.9780768.](https://ieeexplore.ieee.org/abstract/document/9780768/)
 
 [M. Soderi, V. Kamath, J. Morgan and J. G. Breslin, "Ubiquitous System Integration as a Service in Smart Factories," 2021 IEEE International Conference on Internet of Things and Intelligence Systems (IoTaIS), 2021, pp. 261-267, doi: 10.1109/IoTaIS53735.2021.9628434.](https://ieeexplore.ieee.org/abstract/document/9628434/)
+
+Soderi, M., \& Breslin, J. G. (2022). Crazy Nodes: Towards Ultimate Flexibility in Ubiquitous Big Data Stream Engineering, Visualisation, and Analytics, in Smart Factories. 11th International Symposium On Leveraging Applications of Formal Methods, Verification and Validation, ISoLA 2022, Rhodes, Greece, October 22-30, 2022, Proceedings. (Forthcoming)
