@@ -10,4 +10,6 @@ Please refer to the following literature to gain a better understanding of the a
 
 [M. Soderi, V. Kamath, J. Morgan and J. G. Breslin, "Ubiquitous System Integration as a Service in Smart Factories," 2021 IEEE International Conference on Internet of Things and Intelligence Systems (IoTaIS), 2021, pp. 261-267, doi: 10.1109/IoTaIS53735.2021.9628434.](https://ieeexplore.ieee.org/abstract/document/9628434/)
 
-Soderi, M., \& Breslin, J. G. (2022). Crazy Nodes: Towards Ultimate Flexibility in Ubiquitous Big Data Stream Engineering, Visualisation, and Analytics, in Smart Factories. 11th International Symposium On Leveraging Applications of Formal Methods, Verification and Validation, ISoLA 2022, Rhodes, Greece, October 22-30, 2022, Proceedings. (Forthcoming)
+[Soderi, Mirco, and John G. Breslin. "Crazy nodes: towards ultimate flexibility in ubiquitous big data stream engineering, visualisation, and analytics, in smart factories." International Symposium on Leveraging Applications of Formal Methods. Springer, Cham, 2022.](https://link.springer.com/chapter/10.1007/978-3-031-19762-8_18)
+
+[Soderi, Mirco, and John Gerard. "BLE Servers and Ubiquitous Analytics AAS." Digital Book of Abstracts.](https://aics2022.mtu.ie/static/assets/files/AICS2022_Digital_Book_of_Abstracts.pdf#page=75) ( See poster: [AICS_2022_Poster.pdf](https://github.com/mircosoderi/State-of-the-art-Artifacts-for-Big-Data-Engineering-and-Analytics-as-a-Service/blob/main/AICS_2022_Poster.pdf) )
