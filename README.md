@@ -1,5 +1,7 @@
 # Dockerized Micro-Services for Maximally Flexible SaaS <br/> that Enable Timely Responses to Unforeseen Events <br/> in Geo-Distributed Semi-Autonomous Multi-Agent <br/> Systems for Reconfigurable Manufacturing and more
  
+This repository contains software artifacts and documentation related to an organised set of Dockerized micro-services that I designed and developed in the last few years at University of Galway under the supervision of Prof. John Gerard Breslin, and that allow to install, configure, operate and alter any software on any Docker-equipped device from remote and with unlimited flexibility, securely and reliably, enabling timely responses to unforeseen events in geographically distributed semi-autonomous multi-agent systems, for reconfigurable manufacturing, smart cities, and more. Inspectability is also a key feature of this software.
+ 
 Please refer to the following literature to gain a better understanding of the artifacts that you can find in this repository.
 
 [M. Soderi, V. Kamath and J. G. Breslin, "A Demo of a Software Platform for Ubiquitous Big Data Engineering, Visualization, and Analytics, via Reconfigurable Micro-Services, in Smart Factories," 2022 IEEE International Conference on Smart Computing (SMARTCOMP), 2022, pp. 1-3, doi: 10.1109/SMARTCOMP55677.2022.00041.](https://ieeexplore.ieee.org/abstract/document/9821056?casa_token=uRQH9MUeL0gAAAAA:CejSwY8ZaQ261we__UA3FK14_WfMSfJllAX8AzQwB6zfcmAiklJyoSBbWxowDtsjL6cm1zEa8f_O)
