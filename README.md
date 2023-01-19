@@ -1,4 +1,4 @@
-# State-of-the-art Artifacts for Big Data Engineering and Analytics as a Service
+# Dockerized Micro-Services for Maximally Flexible SaaS <br/> that Enable Timely Responses to Unforeseen Events <br/> in Geo-Distributed Semi-Autonomous Multi-Agent Systems
  
 Please refer to the following literature to gain a better understanding of the artifacts that you can find in this repository.
 
