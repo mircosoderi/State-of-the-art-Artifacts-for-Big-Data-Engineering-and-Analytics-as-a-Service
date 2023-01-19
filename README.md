@@ -1,4 +1,4 @@
-# Dockerized Micro-Services for Maximally Flexible SaaS <br/> that Enable Timely Responses to Unforeseen Events <br/> in Geo-Distributed Semi-Autonomous Multi-Agent Systems
+# Dockerized Micro-Services for Maximally Flexible SaaS <br/> that Enable Timely Responses to Unforeseen Events in <br/> Geo-Distributed Semi-Autonomous Multi-Agent Systems
  
 Please refer to the following literature to gain a better understanding of the artifacts that you can find in this repository.
 
