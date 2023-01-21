@@ -1,0 +1,80 @@
+# mysql -u root -p
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 12
+Server version: 10.10.2-MariaDB-1:10.10.2+maria~ubu2204 mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use AlertDatabase;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MariaDB [AlertDatabase]> select * from source;
+Empty set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
+Empty set (0.000 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (10, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.014 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|        1 |    10 | 1674262002 |
++----------+-------+------------+
+1 row in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
+Empty set (0.000 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (100, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.014 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|        1 |    10 | 1674262002 |
+|        2 |   100 | 1674262033 |
++----------+-------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
+Empty set (0.001 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (1000, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|        1 |    10 | 1674262002 |
+|        2 |   100 | 1674262033 |
+|        3 |  1000 | 1674262106 |
++----------+-------+------------+
+3 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
++---------+-------+---------------------+
+| idalert | value | datetime            |
++---------+-------+---------------------+
+|       1 |  1000 | 2023-01-21 00:48:30 |
++---------+-------+---------------------+
+1 row in set (0.001 sec)
+
+MariaDB [AlertDatabase]> truncate table source;
+Query OK, 0 rows affected (0.010 sec)
+
+MariaDB [AlertDatabase]> truncate table alert;
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [AlertDatabase]> quit
+Bye
+# 
