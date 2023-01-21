@@ -1,0 +1,328 @@
+# mysql -u root -p
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 5
+Server version: 10.10.2-MariaDB-1:10.10.2+maria~ubu2204 mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use AlertDatabase;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MariaDB [AlertDatabase]> select * from source;
+Empty set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
+Empty set (0.003 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (10, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.005 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|       10 |    10 | 1674309725 |
++----------+-------+------------+
+1 row in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
+Empty set (0.001 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (100, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|       10 |    10 | 1674309725 |
+|       11 |   100 | 1674309779 |
++----------+-------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
+Empty set (0.001 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (11, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.015 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|       10 |    10 | 1674309725 |
+|       11 |   100 | 1674309779 |
+|       12 |    11 | 1674309846 |
++----------+-------+------------+
+3 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
+Empty set (0.001 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (101, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.022 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|       10 |    10 | 1674309725 |
+|       11 |   100 | 1674309779 |
+|       12 |    11 | 1674309846 |
+|       13 |   101 | 1674309899 |
++----------+-------+------------+
+4 rows in set (0.000 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
++---------+-------+---------------------+
+| idalert | value | datetime            |
++---------+-------+---------------------+
+|       1 |   101 | 2023-01-21 14:05:03 |
+|       2 |   101 | 2023-01-21 14:05:13 |
++---------+-------+---------------------+
+2 rows in set (0.000 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (12, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.012 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|       10 |    10 | 1674309725 |
+|       11 |   100 | 1674309779 |
+|       12 |    11 | 1674309846 |
+|       13 |   101 | 1674309899 |
+|       14 |    12 | 1674309990 |
++----------+-------+------------+
+5 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
++---------+-------+---------------------+
+| idalert | value | datetime            |
++---------+-------+---------------------+
+|       1 |   101 | 2023-01-21 14:05:03 |
+|       2 |   101 | 2023-01-21 14:05:13 |
++---------+-------+---------------------+
+2 rows in set (0.000 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (102, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.025 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|       10 |    10 | 1674309725 |
+|       11 |   100 | 1674309779 |
+|       12 |    11 | 1674309846 |
+|       13 |   101 | 1674309899 |
+|       14 |    12 | 1674309990 |
+|       15 |   102 | 1674310064 |
++----------+-------+------------+
+6 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
++---------+-------+---------------------+
+| idalert | value | datetime            |
++---------+-------+---------------------+
+|       1 |   101 | 2023-01-21 14:05:03 |
+|       2 |   101 | 2023-01-21 14:05:13 |
+|       3 |   102 | 2023-01-21 14:07:53 |
++---------+-------+---------------------+
+3 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (13, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|       10 |    10 | 1674309725 |
+|       11 |   100 | 1674309779 |
+|       12 |    11 | 1674309846 |
+|       13 |   101 | 1674309899 |
+|       14 |    12 | 1674309990 |
+|       15 |   102 | 1674310064 |
+|       16 |    13 | 1674310172 |
++----------+-------+------------+
+7 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
++---------+-------+---------------------+
+| idalert | value | datetime            |
++---------+-------+---------------------+
+|       1 |   101 | 2023-01-21 14:05:03 |
+|       2 |   101 | 2023-01-21 14:05:13 |
+|       3 |   102 | 2023-01-21 14:07:53 |
++---------+-------+---------------------+
+3 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (103, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|       10 |    10 | 1674309725 |
+|       11 |   100 | 1674309779 |
+|       12 |    11 | 1674309846 |
+|       13 |   101 | 1674309899 |
+|       14 |    12 | 1674309990 |
+|       15 |   102 | 1674310064 |
+|       16 |    13 | 1674310172 |
+|       17 |   103 | 1674310230 |
++----------+-------+------------+
+8 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
++---------+-------+---------------------+
+| idalert | value | datetime            |
++---------+-------+---------------------+
+|       1 |   101 | 2023-01-21 14:05:03 |
+|       2 |   101 | 2023-01-21 14:05:13 |
+|       3 |   102 | 2023-01-21 14:07:53 |
+|       4 |   103 | 2023-01-21 14:10:43 |
++---------+-------+---------------------+
+4 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (14, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|       10 |    10 | 1674309725 |
+|       11 |   100 | 1674309779 |
+|       12 |    11 | 1674309846 |
+|       13 |   101 | 1674309899 |
+|       14 |    12 | 1674309990 |
+|       15 |   102 | 1674310064 |
+|       16 |    13 | 1674310172 |
+|       17 |   103 | 1674310230 |
+|       18 |    14 | 1674310288 |
++----------+-------+------------+
+9 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
++---------+-------+---------------------+
+| idalert | value | datetime            |
++---------+-------+---------------------+
+|       1 |   101 | 2023-01-21 14:05:03 |
+|       2 |   101 | 2023-01-21 14:05:13 |
+|       3 |   102 | 2023-01-21 14:07:53 |
+|       4 |   103 | 2023-01-21 14:10:43 |
++---------+-------+---------------------+
+4 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (104, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|       10 |    10 | 1674309725 |
+|       11 |   100 | 1674309779 |
+|       12 |    11 | 1674309846 |
+|       13 |   101 | 1674309899 |
+|       14 |    12 | 1674309990 |
+|       15 |   102 | 1674310064 |
+|       16 |    13 | 1674310172 |
+|       17 |   103 | 1674310230 |
+|       18 |    14 | 1674310288 |
+|       19 |   104 | 1674310327 |
++----------+-------+------------+
+10 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
++---------+-------+---------------------+
+| idalert | value | datetime            |
++---------+-------+---------------------+
+|       1 |   101 | 2023-01-21 14:05:03 |
+|       2 |   101 | 2023-01-21 14:05:13 |
+|       3 |   102 | 2023-01-21 14:07:53 |
+|       4 |   103 | 2023-01-21 14:10:43 |
+|       5 |   104 | 2023-01-21 14:12:13 |
++---------+-------+---------------------+
+5 rows in set (0.000 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (15, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.012 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|       10 |    10 | 1674309725 |
+|       11 |   100 | 1674309779 |
+|       12 |    11 | 1674309846 |
+|       13 |   101 | 1674309899 |
+|       14 |    12 | 1674309990 |
+|       15 |   102 | 1674310064 |
+|       16 |    13 | 1674310172 |
+|       17 |   103 | 1674310230 |
+|       18 |    14 | 1674310288 |
+|       19 |   104 | 1674310327 |
+|       20 |    15 | 1674310394 |
++----------+-------+------------+
+11 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
++---------+-------+---------------------+
+| idalert | value | datetime            |
++---------+-------+---------------------+
+|       1 |   101 | 2023-01-21 14:05:03 |
+|       2 |   101 | 2023-01-21 14:05:13 |
+|       3 |   102 | 2023-01-21 14:07:53 |
+|       4 |   103 | 2023-01-21 14:10:43 |
+|       5 |   104 | 2023-01-21 14:12:13 |
++---------+-------+---------------------+
+5 rows in set (0.000 sec)
+
+MariaDB [AlertDatabase]> insert into source(value, datetime) values (105, unix_timestamp(current_timestamp()));
+Query OK, 1 row affected (0.013 sec)
+
+MariaDB [AlertDatabase]> select * from source;
++----------+-------+------------+
+| idsource | value | datetime   |
++----------+-------+------------+
+|       10 |    10 | 1674309725 |
+|       11 |   100 | 1674309779 |
+|       12 |    11 | 1674309846 |
+|       13 |   101 | 1674309899 |
+|       14 |    12 | 1674309990 |
+|       15 |   102 | 1674310064 |
+|       16 |    13 | 1674310172 |
+|       17 |   103 | 1674310230 |
+|       18 |    14 | 1674310288 |
+|       19 |   104 | 1674310327 |
+|       20 |    15 | 1674310394 |
+|       21 |   105 | 1674310445 |
++----------+-------+------------+
+12 rows in set (0.001 sec)
+
+MariaDB [AlertDatabase]> select * from alert;
++---------+-------+---------------------+
+| idalert | value | datetime            |
++---------+-------+---------------------+
+|       1 |   101 | 2023-01-21 14:05:03 |
+|       2 |   101 | 2023-01-21 14:05:13 |
+|       3 |   102 | 2023-01-21 14:07:53 |
+|       4 |   103 | 2023-01-21 14:10:43 |
+|       5 |   104 | 2023-01-21 14:12:13 |
+|       6 |   105 | 2023-01-21 14:14:13 |
++---------+-------+---------------------+
+6 rows in set (0.000 sec)
+
+MariaDB [AlertDatabase]> quit
+Bye
+# 
