@@ -24,3 +24,7 @@ Complete OpenAPI specifications in yaml format are available for [Network Factor
 [Soderi, Mirco, and John G. Breslin. "Crazy nodes: towards ultimate flexibility in ubiquitous big data stream engineering, visualisation, and analytics, in smart factories." International Symposium on Leveraging Applications of Formal Methods. Springer, Cham, 2022.](https://link.springer.com/chapter/10.1007/978-3-031-19762-8_18)
 
 [Soderi, Mirco, and John Gerard. "BLE Servers and Ubiquitous Analytics AAS.", Digital Book of Abstracts, 30th Irish Conference on Artificial Intelligence and Cognitive Science (AICS 2022), December 8th - 9th, 2022, Cork, Ireland.](https://aics2022.mtu.ie/static/assets/files/AICS2022_Digital_Book_of_Abstracts.pdf#page=75) (See poster: [AICS_2022_Poster.pdf](https://github.com/mircosoderi/State-of-the-art-Artifacts-for-Big-Data-Engineering-and-Analytics-as-a-Service/blob/main/AICS_2022_Poster.pdf))
+
+## Credits
+
+[CustomFDS.tar](https://github.com/mircosoderi/State-of-the-art-Artifacts-for-Big-Data-Engineering-and-Analytics-as-a-Service/blob/main/CustomFDS.tar) is a Docker volume backup meant to be restored to containers based on the [msoderi/py4customfds](https://hub.docker.com/r/msoderi/py4customfds) Docker Image, and it contains a customization of the artifacts published by [Nitesh Bharot](https://www.linkedin.com/in/nitesh-bharot-phd-72bb2049/) in the GitHub repository [CustomFDS](https://github.com/nbharot/CustomFDS) in the context of a Seed Project led by me for the [Confirm SFI Research Centre for Smart Manufacturing](https://confirm.ie/).
