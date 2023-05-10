@@ -1,0 +1,89 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "newman",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "32ad837603a2599c",
+        "type": "newman",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "options": "{\n  \"collection\": \"https://raw.githubusercontent.com/mircosoderi/State-of-the-art-Artifacts-for-Big-Data-Engineering-and-Analytics-as-a-Service/main/NewmanCustomFDSv4.postman_collection.json\",\n  \"environment\": \"https://raw.githubusercontent.com/mircosoderi/State-of-the-art-Artifacts-for-Big-Data-Engineering-and-Analytics-as-a-Service/main/NewmanCustomFDSv4NewmanDemo.postman_environment.json\",\n  \"insecure\": true\n}",
+        "x": 260,
+        "y": 80,
+        "wires": [
+            [
+                "9f61013d638332ab"
+            ],
+            [
+                "5ad4b824800e71c7"
+            ]
+        ]
+    },
+    {
+        "id": "b2615311e795ecac",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 100,
+        "y": 80,
+        "wires": [
+            [
+                "32ad837603a2599c"
+            ]
+        ]
+    },
+    {
+        "id": "9f61013d638332ab",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "report",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "5ad4b824800e71c7",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "events",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 80,
+        "wires": []
+    }
+]
