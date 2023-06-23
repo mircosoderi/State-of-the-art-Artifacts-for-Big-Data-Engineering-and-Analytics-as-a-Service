@@ -1,0 +1,2441 @@
+{
+	"info": {
+		"_postman_id": "a7ace216-1f7f-4702-b85b-1086343748ff",
+		"name": "NewmanNode4CustomFDS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16531967"
+	},
+	"item": [
+		{
+			"name": "-- Network Factory --",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "postman-echo.com/get",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Factory already exists?",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.response.code == 200) postman.setNextRequest(\"Factory is running?\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DockerHost}}:{{DockerPort}}/containers/{{FactoryName}}/json",
+					"host": [
+						"{{DockerHost}}"
+					],
+					"port": "{{DockerPort}}",
+					"path": [
+						"containers",
+						"{{FactoryName}}",
+						"json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pull Network Factory Image",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{DockerHost}}:{{DockerPort}}/images/create?fromImage=msoderi/network-factory&tag={{FactoryVersion}}",
+					"host": [
+						"{{DockerHost}}"
+					],
+					"port": "{{DockerPort}}",
+					"path": [
+						"images",
+						"create"
+					],
+					"query": [
+						{
+							"key": "fromImage",
+							"value": "msoderi/network-factory"
+						},
+						{
+							"key": "tag",
+							"value": "{{FactoryVersion}}"
+						}
+					]
+				},
+				"description": "Thanks to this request, the msoderi/network-factory Docker Image becomes available in your local Docker installation, or in the specified DockerHost, if different from the default (localhost). The image is retrieved from Docker Hub."
+			},
+			"response": []
+		},
+		{
+			"name": "Create Network Factory",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n     \"Image\": \"msoderi/network-factory:{{FactoryVersion}}\",\r\n     \"HostConfig\": {\r\n         \"PortBindings\": {\r\n             \"1880/tcp\": [\r\n                 {\r\n                     \"HostPort\": \"{{FactoryPort}}\"\r\n                 }\r\n             ]\r\n         }\r\n     },\r\n     \"ExposedPorts\": {\r\n         \"1880/tcp\": {}\r\n     }\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DockerHost}}:{{DockerPort}}/containers/create?name={{FactoryName}}",
+					"host": [
+						"{{DockerHost}}"
+					],
+					"port": "{{DockerPort}}",
+					"path": [
+						"containers",
+						"create"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{FactoryName}}"
+						}
+					]
+				},
+				"description": "Thanks to this request, the msoderi/network-factory Docker Image becomes available in your local Docker installation, or in the specified DockerHost, if different from the default (localhost). The image is retrieved from Docker Hub."
+			},
+			"response": []
+		},
+		{
+			"name": "Factory is running?",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(JSON.parse(responseBody).State.Running) postman.setNextRequest(\"-- Fence --\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DockerHost}}:{{DockerPort}}/containers/{{FactoryName}}/json",
+					"host": [
+						"{{DockerHost}}"
+					],
+					"port": "{{DockerPort}}",
+					"path": [
+						"containers",
+						"{{FactoryName}}",
+						"json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start Network Factory",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"setTimeout(function(){}, 10000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{DockerHost}}:{{DockerPort}}/containers/{{FactoryName}}/start",
+					"host": [
+						"{{DockerHost}}"
+					],
+					"port": "{{DockerPort}}",
+					"path": [
+						"containers",
+						"{{FactoryName}}",
+						"start"
+					]
+				},
+				"description": "Through this request, you start the Docker container you created through request 0.2, and have a Network Factory up and running in your target device, which is by default your local device."
+			},
+			"response": []
+		},
+		{
+			"name": "-- Fence --",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FactoryEndp}}/echo",
+					"host": [
+						"{{FactoryEndp}}"
+					],
+					"path": [
+						"echo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fence already exists?",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.response.code == 200) postman.setNextRequest(\"-- Utility --\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FactoryEndp}}/fence/{{FenceName}}",
+					"host": [
+						"{{FactoryEndp}}"
+					],
+					"path": [
+						"fence",
+						"{{FenceName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Newman Fence",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{FactoryEndp}}/fence/{{FenceName}}",
+					"host": [
+						"{{FactoryEndp}}"
+					],
+					"path": [
+						"fence",
+						"{{FenceName}}"
+					]
+				},
+				"description": "This request creates a fence (user-defined Docker network) named GettingStarted on the targeted Docker Host."
+			},
+			"response": []
+		},
+		{
+			"name": "-- Utility --",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FactoryEndp}}/echo",
+					"host": [
+						"{{FactoryEndp}}"
+					],
+					"path": [
+						"echo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create MQTT Broker",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{FactoryEndp}}/{{FenceName}}/broker",
+					"host": [
+						"{{FactoryEndp}}"
+					],
+					"path": [
+						"{{FenceName}}",
+						"broker"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Access Control Node",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{FactoryEndp}}/{{FenceName}}/servicenodeacl",
+					"host": [
+						"{{FactoryEndp}}"
+					],
+					"path": [
+						"{{FenceName}}",
+						"servicenodeacl"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transformation Library",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{FactoryEndp}}/{{FenceName}}/transformationlibrary",
+					"host": [
+						"{{FactoryEndp}}"
+					],
+					"path": [
+						"{{FenceName}}",
+						"transformationlibrary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "-- Trigger --",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FactoryEndp}}/echo",
+					"host": [
+						"{{FactoryEndp}}"
+					],
+					"path": [
+						"echo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Trigger Node",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"name\": \"TriggerNode\", \"ports\": { \"1880/tcp\": \"{{TriggerPort}}\" }, \"env\": [\"CFG_ACL_ENDP=https://ServiceNodeDefaultACL:1880/acl\", \"NRLIB_ENDP=https://DefaultTransformationLibrary:1880/\"] }"
+				},
+				"url": {
+					"raw": "{{FactoryEndp}}/{{FenceName}}/servicenode",
+					"host": [
+						"{{FactoryEndp}}"
+					],
+					"path": [
+						"{{FenceName}}",
+						"servicenode"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT transformation",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "inject"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/transformation",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"transformation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST output node",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "out"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/output",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"output"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT out broker",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "DefaultMqttBroker"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/out/broker",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"out",
+						"broker"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT out port",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "8883"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/out/port",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"out",
+						"port"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT out topic",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "NewmanNode4CustomFDS/trigger"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/out/topic",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"out",
+						"topic"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT out qos",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "2"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/out/qos",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"out",
+						"qos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT out usetls",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "yes"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/out/usetls",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"out",
+						"usetls"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT out key",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "/data/mycert.key"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/out/key",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"out",
+						"key"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT out cert",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "/data/mycert.pem"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/out/cert",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"out",
+						"cert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT out ca",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "/data/ca.pem"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/out/ca",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"out",
+						"ca"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT out verifyservercert",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "no"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/out/verifyservercert",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"out",
+						"verifyservercert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT out servername",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "DefaultMqttBroker"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/out/servername",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"out",
+						"servername"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT out credentials",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user\": \"admin\",\r\n    \"password\": \"admin\"\r\n}"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/out/credentials",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"out",
+						"credentials"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST wire from inject to out",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "out"
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/wire/inject/0",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"wire",
+						"inject",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Trigger Node start",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/node/start",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"node",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "-- Newman --",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FactoryEndp}}/echo",
+					"host": [
+						"{{FactoryEndp}}"
+					],
+					"path": [
+						"echo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Newman Node",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"ports\": { \"1880/tcp\": \"{{NewmanPort}}\" }, \"env\": [\"CFG_ACL_ENDP=https://ServiceNodeDefaultACL:1880/acl\"] }"
+				},
+				"url": {
+					"raw": "{{FactoryEndp}}/{{FenceName}}/newman",
+					"host": [
+						"{{FactoryEndp}}"
+					],
+					"path": [
+						"{{FenceName}}",
+						"newman"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT collection",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "https://raw.githubusercontent.com/mircosoderi/State-of-the-art-Artifacts-for-Big-Data-Engineering-and-Analytics-as-a-Service/main/NewmanCustomFDSv4.postman_collection.json",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/collection",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"collection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT insecure",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/param/insecure",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"param",
+						"insecure"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT delay-request",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "1000",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/param/delay-request",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"param",
+						"delay-request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var DockerHost",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "http://host.docker.internal",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/DockerHost",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"DockerHost"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var DockerPort",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "2375",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/DockerPort",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"DockerPort"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var ModelPort",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "1883",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/ModelPort",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"ModelPort"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var FactoryName",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "NetworkFactory",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/FactoryName",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"FactoryName"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var FactoryVersion",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "0.12",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/FactoryVersion",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"FactoryVersion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var FactoryPort",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "585",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/FactpryPort",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"FactpryPort"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var FactoryEndp",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "https://host.docker.internal:585",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/FactoryEndp",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"FactoryEndp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var FactoryUser",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "netadm",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/FactoryUser",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"FactoryUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var FactoryPass",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "netadmpass",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/FactoryPass",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"FactoryPass"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var FenceName",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "NewmanCustomFDS",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/FenceName",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"FenceName"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var ModelName",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "DemoCustomFDS",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/ModelName",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"ModelName"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var TestDataset",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "https://raw.githubusercontent.com/nbharot/CustomFDS/main/Testing%20data.csv",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/TestDataset",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"TestDataset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var TrainDataset",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "https://raw.githubusercontent.com/nbharot/CustomFDS/main/Training%20data.csv",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/TrainDataset",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"TrainDataset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var FS",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "NO ETC",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/FS",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"FS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var SAMPL",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "NO UNDER",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/SAMPL",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"SAMPL"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT env-var ALGO",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "SVC RF",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/newman/paramvar/env-var/ALGO",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"newman",
+						"paramvar",
+						"env-var",
+						"ALGO"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST input node",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "in"
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/input",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"input"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT input broker",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "DefaultMqttBroker"
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/in/broker",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"in",
+						"broker"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT input port",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "8883"
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/in/port",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"in",
+						"port"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT input topic",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "NewmanNode4CustomFDS/trigger"
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/in/topic",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"in",
+						"topic"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT input qos",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "2"
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/in/qos",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"in",
+						"qos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT input usetls",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "yes"
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/in/usetls",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"in",
+						"usetls"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT input tls key",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "/data/mycert.key"
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/in/key",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"in",
+						"key"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT input tls cert",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "/data/mycert.pem"
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/in/cert",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"in",
+						"cert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT input tls ca",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "/data/ca.pem"
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/in/ca",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"in",
+						"ca"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT input tls verify",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "no"
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/in/verifyservercert",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"in",
+						"verifyservercert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT input tls server",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "DefaultMqttBroker"
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/in/servername",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"in",
+						"servername"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT input credentials",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user\": \"admin\",\r\n    \"password\": \"admin\"\r\n}"
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/in/credentials",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"in",
+						"credentials"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST wire input - newman",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "newman"
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/wire/in/0",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"wire",
+						"in",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Newman Node start",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{NewmanEndp}}/node/start",
+					"host": [
+						"{{NewmanEndp}}"
+					],
+					"path": [
+						"node",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "-- Run --",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FactoryEndp}}/echo",
+					"host": [
+						"{{FactoryEndp}}"
+					],
+					"path": [
+						"echo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST to trigger collection run",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{TriggerEndp}}/inject",
+					"host": [
+						"{{TriggerEndp}}"
+					],
+					"path": [
+						"inject"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
