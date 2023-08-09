@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dcpf-loader
+  namespace: assurance
+spec:
+  selector:
+    app: dcpf-loader
+  ports:
+    - protocol: TCP
+      port: 1880
+      targetPort: 1880
+      nodePort: 30018
+  type: NodePort

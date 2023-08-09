@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dcpf-industrialarm
+  namespace: assurance
+  labels:
+    app: dcpf-industrialarm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dcpf-industrialarm
+  template:
+    metadata:
+      labels:
+        app: dcpf-industrialarm
+    spec:
+      containers:
+      - name: dcpf-industrialarm
+        image: nodered/node-red:latest
+        ports:
+        - containerPort: 1880
+        env:
+        - name: NRADM_USER
+          value: nradm
+        - name: NRADM_PASS
+          value: nradmpass
+        - name: CFG_ACL_ENDP
+          value: https://ServiceNodeDefaultACL:1880/acl
+        - name: CFG_ACL_CACE
+          value: /data/ca.pem
+        - name: NRLIB_ENDP
+          value: https://DefaultTransformationLibrary:1880/
+        - name: NRLIB_USER
+          value: nruser
+        - name: NRLIB_PASS
+          value: nrpass
+        - name: NRLIB_CACE
+          value: /data/ca.pem
+        - name: AISRV_ENDP
+          value: https://DefaultAIServer:8080/nodes
+        - name: AISRV_CACE
+          value: /data/ca.pem
+        - name: FLUME_LEVEL
+          value: off
+        - name: FLUME_HOST
+          value: DefaultFlumeNode
+        - name: FLUME_PORT
+          value: '9563'
+        - name: FLUME_METRICS
+          value: 'false'
+        - name: FLUME_AUDIT
+          value: 'false'
+        - name: OTEL_EXPORTER
+          value: http://jaeger:4318/v1/traces
+        - name: OTEL_SERVICE
+          value: DCPF-IndustrialArm
+        - name: OTEL_PREFIX
+          value: DCPF-IndustrialArm-
+        volumeMounts:
+        - mountPath: /data
+          name: dcpf-industrialarm
+      initContainers:
+      - name: dcpf-industrialarm-init
+        image: busybox:latest
+        volumeMounts:
+        - mountPath: /data
+          name: dcpf-industrialarm
+        command: [ 'sh', '-c', 'cd / && wget -O dockervolumebackup.tar "https://drive.google.com/uc?export=download&id=1-5qAHTQBhV2AEwkilCIHUCZZkTCqZxY_" && tar xvf dockervolumebackup.tar ']
+      volumes:
+      - name: dcpf-industrialarm
+        emptyDir:

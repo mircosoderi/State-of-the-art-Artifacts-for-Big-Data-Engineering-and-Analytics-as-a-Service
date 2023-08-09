@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: servicenodedefaultacl
+  namespace: assurance
+  labels:
+    app: servicenodedefaultacl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: servicenodedefaultacl
+  template:
+    metadata:
+      labels:
+        app: servicenodedefaultacl
+    spec:
+      containers:
+      - name: servicenodedefaultacl
+        image: nodered/node-red:latest
+        ports:
+        - containerPort: 1880
+        volumeMounts:
+        - mountPath: /data
+          name: servicenodedefaultacl
+      initContainers:
+      - name: servicenodedefaultacl-init
+        image: busybox:latest
+        volumeMounts:
+        - mountPath: /data
+          name: servicenodedefaultacl
+        command: [ 'sh', '-c', 'cd / && wget https://github.com/mircosoderi/State-of-the-art-Artifacts-for-Big-Data-Engineering-and-Analytics-as-a-Service/raw/main/servicenodeacl.tar && tar xvf servicenodeacl.tar ']
+      volumes:
+      - name: servicenodedefaultacl
+        emptyDir:

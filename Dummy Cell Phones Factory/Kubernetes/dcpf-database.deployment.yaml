@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dcpf-database
+  namespace: assurance
+  labels:
+    app: dcpf-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dcpf-database
+  template:
+    metadata:
+      labels:
+        app: dcpf-database
+    spec:
+      containers:
+      - name: dcpf-database
+        image: mariadb:latest
+        ports:
+        - containerPort: 3306
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: root
+        volumeMounts:
+        - mountPath: /docker-entrypoint-initdb.d
+          name: dcpf-database-init-vol
+        - mountPath: /var/lib/mysql
+          name: dcpf-database-data
+      initContainers:
+      - name: dcpf-database-init-cont
+        image: busybox:latest
+		volumeMounts:
+        - mountPath: /docker-entrypoint-initdb.d
+          name: dcpf-database-init-vol
+        command: [ 'sh', '-c', 'cd / && wget https://github.com/mircosoderi/State-of-the-art-Artifacts-for-Big-Data-Engineering-and-Analytics-as-a-Service/raw/main/dcpf-docker-entrypoint-initdb.d.tar && tar xvf dcpf-docker-entrypoint-initdb.d.tar ']
+      volumes:
+      - name: dcpf-database-init-vol
+        emptyDir:
+      - name: dcpf-database-data
+        emptyDir:

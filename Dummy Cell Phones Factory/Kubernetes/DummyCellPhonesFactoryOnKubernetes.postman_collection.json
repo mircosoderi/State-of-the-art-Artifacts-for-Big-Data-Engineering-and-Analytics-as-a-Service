@@ -1,0 +1,411 @@
+{
+	"info": {
+		"_postman_id": "699e60d9-3f8a-4009-9459-305c71260607",
+		"name": "DummyCellPhonesFactoryOnKubernetes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16531967"
+	},
+	"item": [
+		{
+			"name": "Insert order",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"client\": \"CLIENTXXX01\",\r\n    \"itemtype\": \"smallcellphone\",\r\n    \"quantity\": 1\r\n}"
+				},
+				"url": {
+					"raw": "https://172.20.28.110:30019/order",
+					"protocol": "https",
+					"host": [
+						"172",
+						"20",
+						"28",
+						"110"
+					],
+					"port": "30019",
+					"path": [
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add component to magazine",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://172.20.28.110:30016/magazine/circuitboard/number/CCB00001/to/3",
+					"protocol": "https",
+					"host": [
+						"172",
+						"20",
+						"28",
+						"110"
+					],
+					"port": "30016",
+					"path": [
+						"magazine",
+						"circuitboard",
+						"number",
+						"CCB00001",
+						"to",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add other component to magazine",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://172.20.28.110:30016/magazine/smalltopcover/number/STC00001/to/2",
+					"protocol": "https",
+					"host": [
+						"172",
+						"20",
+						"28",
+						"110"
+					],
+					"port": "30016",
+					"path": [
+						"magazine",
+						"smalltopcover",
+						"number",
+						"STC00001",
+						"to",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add last component to magazine",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://172.20.28.110:30016/magazine/smallbottomcover/number/SBC00001/to/1",
+					"protocol": "https",
+					"host": [
+						"172",
+						"20",
+						"28",
+						"110"
+					],
+					"port": "30016",
+					"path": [
+						"magazine",
+						"smallbottomcover",
+						"number",
+						"SBC00001",
+						"to",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start production",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"conveyor_belt_speed\": 1,\r\n    \"accept_recommended_speed\": \"no\"\r\n}"
+				},
+				"url": {
+					"raw": "https://172.20.28.110:30020/production/start",
+					"protocol": "https",
+					"host": [
+						"172",
+						"20",
+						"28",
+						"110"
+					],
+					"port": "30020",
+					"path": [
+						"production",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stop production",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://172.20.28.110:30020/production/stop",
+					"protocol": "https",
+					"host": [
+						"172",
+						"20",
+						"28",
+						"110"
+					],
+					"port": "30020",
+					"path": [
+						"production",
+						"stop"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove finished product from belt",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://172.20.28.110:30017/conveyed/item/CCB00001STC00001SBC00001",
+					"protocol": "https",
+					"host": [
+						"172",
+						"20",
+						"28",
+						"110"
+					],
+					"port": "30017",
+					"path": [
+						"conveyed",
+						"item",
+						"CCB00001STC00001SBC00001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add finished product to magazine",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://172.20.28.110:30016/magazine/smallcellphone/number/CCB00001STC00001SBC00001/to/10/for/order/1",
+					"protocol": "https",
+					"host": [
+						"172",
+						"20",
+						"28",
+						"110"
+					],
+					"port": "30016",
+					"path": [
+						"magazine",
+						"smallcellphone",
+						"number",
+						"CCB00001STC00001SBC00001",
+						"to",
+						"10",
+						"for",
+						"order",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deliver order",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://172.20.28.110:30019/order/number/1/delivery",
+					"protocol": "https",
+					"host": [
+						"172",
+						"20",
+						"28",
+						"110"
+					],
+					"port": "30019",
+					"path": [
+						"order",
+						"number",
+						"1",
+						"delivery"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dcpf-industrialarm
+  namespace: assurance
+spec:
+  selector:
+    app: dcpf-industrialarm
+  ports:
+    - protocol: TCP
+      port: 1880
+      targetPort: 1880
+      nodePort: 30023
+  type: NodePort

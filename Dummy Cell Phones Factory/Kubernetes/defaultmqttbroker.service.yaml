@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: defaultmqttbroker
+  namespace: assurance
+spec:
+  selector:
+    app: defaultmqttbroker
+  ports:
+    - protocol: TCP
+      port: 8883
+      targetPort: 8883
+      nodePort: 30001
+  type: NodePort
+

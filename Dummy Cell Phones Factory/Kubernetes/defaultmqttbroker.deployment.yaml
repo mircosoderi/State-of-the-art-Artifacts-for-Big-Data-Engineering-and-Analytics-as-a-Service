@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: defaultmqttbroker
+  namespace: assurance
+  labels:
+    app: defaultmqttbroker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: defaultmqttbroker
+  template:
+    metadata:
+      labels:
+        app: defaultmqttbroker
+    spec:
+      containers:
+      - name: defaultmqttbroker
+        image: emqx/emqx:4.3.2
+        ports:
+        - containerPort: 8883
+        volumeMounts:
+        - mountPath: /opt/emqx
+          name: defaultmqttbroker
+      initContainers:
+      - name: defaultmqttbroker-init
+        image: busybox:latest
+        volumeMounts:
+        - mountPath: /opt/emqx
+          name: defaultmqttbroker
+        command: [ 'sh', '-c', 'cd / && wget https://github.com/mircosoderi/State-of-the-art-Artifacts-for-Big-Data-Engineering-and-Analytics-as-a-Service/raw/main/mqttbroker.tar && tar xvf mqttbroker.tar ']
+      volumes:
+      - name: defaultmqttbroker
+        emptyDir:

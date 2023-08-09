@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger
+  namespace: assurance
+spec:
+  selector:
+    app: jaeger
+  ports:
+    - protocol: UDP
+      port: 6831
+      targetPort: 6831
+      nodePort: 30004
+      name: udp6831
+    - protocol: UDP
+      port: 6832
+      targetPort: 6832
+      nodePort: 30005
+      name: udp6832
+    - protocol: TCP
+      port: 5778
+      targetPort: 5778
+      nodePort: 30006   
+      name: tcp5778
+    - protocol: TCP
+      port: 16685
+      targetPort: 16685
+      nodePort: 30007
+      name: tcp16685
+    - protocol: TCP
+      port: 16686
+      targetPort: 16686
+      nodePort: 30008
+      name: tcp16686
+    - protocol: TCP
+      port: 4137
+      targetPort: 4137
+      nodePort: 30009
+      name: tcp4137
+    - protocol: TCP
+      port: 4138
+      targetPort: 4138
+      nodePort: 30010
+      name: tcp4138
+    - protocol: TCP
+      port: 14250
+      targetPort: 14250
+      nodePort: 30011   
+      name: tcp14250
+    - protocol: TCP
+      port: 14268
+      targetPort: 14268
+      nodePort: 30012      
+      name: tcp14268
+    - protocol: TCP
+      port: 14269
+      targetPort: 14269
+      nodePort: 30013
+      name: tcp14269
+    - protocol: TCP
+      port: 9411
+      targetPort: 9411
+      nodePort: 30014     
+      name: tcp9411
+  type: NodePort
